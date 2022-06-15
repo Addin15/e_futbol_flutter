@@ -2,7 +2,6 @@ import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/constants/widget.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
@@ -12,6 +11,11 @@ class Home extends StatefulWidget {
 
   @override
   State<Home> createState() => _HomeState();
+}
+
+enum MenuItem {
+  history,
+  logout,
 }
 
 class _HomeState extends State<Home> {
@@ -61,36 +65,57 @@ class _HomeState extends State<Home> {
           ],
         ),
         SizedBox(width: 2.w),
-        Container(
-          margin: EdgeInsets.symmetric(vertical: 1.5.h),
-          child: TextButton.icon(
-            icon: Icon(
-              Icons.login_outlined,
-              size: 3.sp,
-            ),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.symmetric(
-                horizontal: 1.5.w,
-              ),
-              backgroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.sp),
-                side: BorderSide(color: primary, width: 1),
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                authService.logout();
-              });
-            },
-            label: Text(
-              'Logout',
-              style: TextStyle(
-                color: primary,
-                fontSize: 3.sp,
-              ),
-            ),
+        PopupMenuButton(
+          icon: Icon(
+            Icons.person,
+            color: primary,
           ),
+          padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(2.sp)),
+          offset: Offset(0, 8.h),
+          onSelected: (value) {
+            if (value == MenuItem.history) {
+            } else if (value == MenuItem.logout) {
+              authService.logout();
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: MenuItem.history,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.history_outlined,
+                    size: 3.sp,
+                    color: primary,
+                  ),
+                  SizedBox(width: 1.w),
+                  Text(
+                    'Booking History',
+                    style: TextStyle(color: primary, fontSize: 3.sp),
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: MenuItem.logout,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.logout_outlined,
+                    size: 3.sp,
+                    color: primary,
+                  ),
+                  SizedBox(width: 1.w),
+                  Text(
+                    'Logout',
+                    style: TextStyle(color: primary, fontSize: 3.sp),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
         SizedBox(width: 2.w),
       ],
@@ -758,7 +783,9 @@ class _CompareArenaState extends State<CompareArena> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(2.sp),
                         child: IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            selectArena(1);
+                          },
                           iconSize: 15.sp,
                           icon: Image.asset(
                             'icons/add.png',
