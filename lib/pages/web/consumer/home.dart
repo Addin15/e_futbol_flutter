@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/constants/widget.dart';
+import 'package:e_futbol_flutter/controllers/arena_controller.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -307,7 +311,13 @@ class _NearbyArenaState extends State<NearbyArena> {
                   height: 30.sp,
                 ),
                 SizedBox(width: 3.w),
-                Text('No nearby arena found'),
+                Text(
+                  'No nearby arena found',
+                  style: TextStyle(
+                    fontSize: 4.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           )
@@ -326,6 +336,10 @@ class _SearchArenaState extends State<SearchArena> {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocus = FocusNode();
 
+  List<Arena> searchedArenas = [];
+  bool searchingState = false;
+  bool isSearching = false;
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -341,6 +355,26 @@ class _SearchArenaState extends State<SearchArena> {
                   focusNode: _searchFocus,
                   hintText: 'Search Arena...',
                   isSearch: true,
+                  onChange: (input) async {
+                    if (input.isEmpty) {
+                      setState(() {
+                        searchingState = false;
+                      });
+                    } else {
+                      setState(() {
+                        searchingState = true;
+                        isSearching = true;
+                      });
+
+                      List<Arena> arenas =
+                          await ArenaController.search(query: input);
+
+                      setState(() {
+                        searchedArenas = arenas;
+                        isSearching = false;
+                      });
+                    }
+                  },
                 ),
               ),
               SizedBox(width: 3.w),
@@ -355,6 +389,149 @@ class _SearchArenaState extends State<SearchArena> {
             ],
           ),
         ),
+        !searchingState
+            ? Container(
+                height: 75.h,
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'icons/find.png',
+                      width: 30.sp,
+                      height: 30.sp,
+                    ),
+                    SizedBox(width: 3.w),
+                    Text(
+                      'Find and book your preferred arena now!',
+                      style: TextStyle(
+                        fontSize: 4.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : isSearching
+                ? Container(
+                    height: 75.h,
+                    alignment: Alignment.center,
+                    color: Colors.white,
+                    child: SpinKitChasingDots(
+                      color: primary,
+                    ),
+                  )
+                : searchedArenas.isEmpty
+                    ? Container(
+                        height: 75.h,
+                        alignment: Alignment.center,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'icons/notfound.png',
+                              width: 30.sp,
+                              height: 30.sp,
+                            ),
+                            SizedBox(width: 3.w),
+                            Text(
+                              'No matched arena found',
+                              style: TextStyle(
+                                fontSize: 4.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 2.w,
+                        ),
+                        itemCount: searchedArenas.length,
+                        itemBuilder: (context, index) {
+                          Arena arena = searchedArenas[index];
+                          return Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.sp),
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 3.w, vertical: 2.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(4.sp),
+                                    child: Image.asset(
+                                      'dummy/dummy.jpg',
+                                      fit: BoxFit.cover,
+                                      height: 40.h,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    arena.arenaName!,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2.h),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.sp),
+                                            side: BorderSide(color: primary),
+                                          ),
+                                        ),
+                                        onPressed: () {},
+                                        child: Text(
+                                          'Details',
+                                          style: TextStyle(
+                                            fontSize: 3.sp,
+                                            color: primary,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 1.w),
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2.h),
+                                          backgroundColor: primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(2.sp),
+                                            side: BorderSide(color: primary),
+                                          ),
+                                        ),
+                                        onPressed: () {},
+                                        child: Text(
+                                          'Book Now',
+                                          style: TextStyle(
+                                            fontSize: 3.sp,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
       ],
     );
   }

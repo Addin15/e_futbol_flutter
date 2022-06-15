@@ -8,11 +8,13 @@ Widget customTextFormField({
   required String hintText,
   bool isObscured = false,
   bool isSearch = false,
+  Function(String)? onChange,
 }) =>
     TextFormField(
       controller: controller,
       focusNode: focusNode,
       obscureText: isObscured,
+      onChanged: onChange,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: !isSearch
