@@ -25,4 +25,22 @@ class ArenaController {
 
     return [];
   }
+
+  static Future<List<Arena>> get50s() async {
+    String url = hostName + api + '/arenas/get';
+
+    var response = await get(
+      Uri.parse(url),
+      headers: headersWithoutToken(),
+    );
+
+    if (response.statusCode == 200) {
+      List arenas = jsonDecode(response.body);
+      return arenas
+          .map((arena) => Arena.fromMap(arena as Map<String, dynamic>))
+          .toList();
+    }
+
+    return <Arena>[];
+  }
 }

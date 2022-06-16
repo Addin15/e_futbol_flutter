@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:e_futbol_flutter/controllers/auth_controller.dart';
 import 'package:e_futbol_flutter/models/user.dart';

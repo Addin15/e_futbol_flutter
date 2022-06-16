@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/constants/widget.dart';

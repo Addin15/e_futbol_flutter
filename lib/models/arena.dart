@@ -1,4 +1,5 @@
 class Arena {
+  int? id;
   String? arenaName;
   String? providerName;
   int? numberField;
@@ -12,6 +13,7 @@ class Arena {
   String? address;
 
   Arena({
+    this.id,
     this.arenaName,
     this.providerName,
     this.numberField,
@@ -26,6 +28,7 @@ class Arena {
   });
 
   factory Arena.fromMap(Map<String, dynamic> map) => Arena(
+        id: map['id'],
         arenaName: map['arena_name'],
         providerName: map['provider_name'],
         numberField: int.parse(map['number_field']),

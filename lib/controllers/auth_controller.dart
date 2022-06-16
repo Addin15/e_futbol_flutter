@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:e_futbol_flutter/config/config.dart';
-import 'package:e_futbol_flutter/models/user.dart';
 import 'package:http/http.dart';
 
 class AuthController {

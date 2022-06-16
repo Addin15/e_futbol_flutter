@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:e_futbol_flutter/auth.dart';
-import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
