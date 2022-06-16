@@ -2,6 +2,9 @@ import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/constants/widget.dart';
 import 'package:e_futbol_flutter/controllers/arena_controller.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/book.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/details.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:sizer/sizer.dart';
@@ -151,7 +154,13 @@ class _SearchArenaState extends State<SearchArena> {
                                               side: BorderSide(color: primary),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        ArenaDetails()));
+                                          },
                                           child: Text(
                                             'Details',
                                             style: TextStyle(
@@ -172,7 +181,13 @@ class _SearchArenaState extends State<SearchArena> {
                                               side: BorderSide(color: primary),
                                             ),
                                           ),
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                CupertinoPageRoute(
+                                                    builder: (context) =>
+                                                        ArenaBook()));
+                                          },
                                           child: Text(
                                             'Book Now',
                                             style: TextStyle(
@@ -300,7 +315,13 @@ class _SearchArenaState extends State<SearchArena> {
                                                       color: primary),
                                                 ),
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            ArenaDetails()));
+                                              },
                                               child: Text(
                                                 'Details',
                                                 style: TextStyle(
@@ -324,7 +345,13 @@ class _SearchArenaState extends State<SearchArena> {
                                                       color: primary),
                                                 ),
                                               ),
-                                              onPressed: () {},
+                                              onPressed: () {
+                                                Navigator.push(
+                                                    context,
+                                                    CupertinoPageRoute(
+                                                        builder: (context) =>
+                                                            ArenaBook()));
+                                              },
                                               child: Text(
                                                 'Book Now',
                                                 style: TextStyle(

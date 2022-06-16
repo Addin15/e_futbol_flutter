@@ -39,7 +39,8 @@ class _CompareArenaState extends State<CompareArena> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      shrinkWrap: true,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,

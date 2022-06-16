@@ -37,6 +37,9 @@ class _NearbyArenaState extends State<NearbyArena> {
               ],
             ),
           )
-        : Container();
+        : GridView(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, crossAxisSpacing: 2.w),
+          );
   }
 }

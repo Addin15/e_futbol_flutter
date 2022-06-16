@@ -130,6 +130,12 @@ class _HomeState extends State<Home> {
   }
 }
 
+enum HomePage {
+  nearby,
+  search,
+  compare,
+}
+
 class HomeContent extends StatefulWidget {
   const HomeContent({Key? key}) : super(key: key);
 
@@ -138,7 +144,9 @@ class HomeContent extends StatefulWidget {
 }
 
 class _HomeContentState extends State<HomeContent> {
-  int selectedPage = 0;
+  HomePage selectedPage = HomePage.nearby;
+
+  String selectedRoute = '/nearby';
 
   @override
   Widget build(BuildContext context) {
@@ -152,14 +160,23 @@ class _HomeContentState extends State<HomeContent> {
         children: [
           tabBar(),
           SizedBox(height: 2.h),
-          [
-            // Nearby page
-            const NearbyArena(),
-            // Search page
-            const SearchArena(),
-            // Compare page
-            const CompareArena(),
-          ][selectedPage],
+          SizedBox(
+            height: 85.h,
+            child: Navigator(
+              initialRoute: selectedRoute,
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(builder: (_) {
+                  if (selectedPage == HomePage.nearby) {
+                    return const NearbyArena();
+                  } else if (selectedPage == HomePage.search) {
+                    return const SearchArena();
+                  } else {
+                    return const CompareArena();
+                  }
+                });
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -175,7 +192,8 @@ class _HomeContentState extends State<HomeContent> {
                 horizontal: 3.w,
                 vertical: 2.h,
               ),
-              backgroundColor: selectedPage == 0 ? primary : Colors.white,
+              backgroundColor:
+                  selectedPage == HomePage.nearby ? primary : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(2.sp),
                 side: BorderSide(color: primary),
@@ -183,7 +201,8 @@ class _HomeContentState extends State<HomeContent> {
             ),
             onPressed: () {
               setState(() {
-                selectedPage = 0;
+                selectedPage = HomePage.nearby;
+                selectedRoute = '/nearby';
               });
             },
             child: Row(
@@ -192,14 +211,17 @@ class _HomeContentState extends State<HomeContent> {
                 Icon(
                   Icons.location_on_outlined,
                   size: 5.sp,
-                  color: selectedPage == 0 ? Colors.white : primary,
+                  color:
+                      selectedPage == HomePage.nearby ? Colors.white : primary,
                 ),
                 SizedBox(width: 2.w),
                 Text(
                   'Nearby Arenas',
                   style: TextStyle(
                     fontSize: 3.sp,
-                    color: selectedPage == 0 ? Colors.white : primary,
+                    color: selectedPage == HomePage.nearby
+                        ? Colors.white
+                        : primary,
                   ),
                 ),
               ],
@@ -214,7 +236,8 @@ class _HomeContentState extends State<HomeContent> {
                 horizontal: 3.w,
                 vertical: 2.h,
               ),
-              backgroundColor: selectedPage == 1 ? primary : Colors.white,
+              backgroundColor:
+                  selectedPage == HomePage.search ? primary : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(2.sp),
                 side: BorderSide(color: primary),
@@ -222,7 +245,8 @@ class _HomeContentState extends State<HomeContent> {
             ),
             onPressed: () {
               setState(() {
-                selectedPage = 1;
+                selectedPage = HomePage.search;
+                selectedRoute = '/search';
               });
             },
             child: Row(
@@ -231,14 +255,17 @@ class _HomeContentState extends State<HomeContent> {
                 Icon(
                   Icons.search_outlined,
                   size: 5.sp,
-                  color: selectedPage == 1 ? Colors.white : primary,
+                  color:
+                      selectedPage == HomePage.search ? Colors.white : primary,
                 ),
                 SizedBox(width: 2.w),
                 Text(
                   'Search Arena',
                   style: TextStyle(
                     fontSize: 3.sp,
-                    color: selectedPage == 1 ? Colors.white : primary,
+                    color: selectedPage == HomePage.search
+                        ? Colors.white
+                        : primary,
                   ),
                 ),
               ],
@@ -253,7 +280,8 @@ class _HomeContentState extends State<HomeContent> {
                 horizontal: 3.w,
                 vertical: 2.h,
               ),
-              backgroundColor: selectedPage == 2 ? primary : Colors.white,
+              backgroundColor:
+                  selectedPage == HomePage.compare ? primary : Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(2.sp),
                 side: BorderSide(color: primary),
@@ -261,7 +289,8 @@ class _HomeContentState extends State<HomeContent> {
             ),
             onPressed: () {
               setState(() {
-                selectedPage = 2;
+                selectedPage = HomePage.compare;
+                selectedRoute = '/compare';
               });
             },
             child: Row(
@@ -270,14 +299,17 @@ class _HomeContentState extends State<HomeContent> {
                 Icon(
                   Icons.compare_outlined,
                   size: 5.sp,
-                  color: selectedPage == 2 ? Colors.white : primary,
+                  color:
+                      selectedPage == HomePage.compare ? Colors.white : primary,
                 ),
                 SizedBox(width: 2.w),
                 Text(
                   'Compare Arena',
                   style: TextStyle(
                     fontSize: 3.sp,
-                    color: selectedPage == 2 ? Colors.white : primary,
+                    color: selectedPage == HomePage.compare
+                        ? Colors.white
+                        : primary,
                   ),
                 ),
               ],

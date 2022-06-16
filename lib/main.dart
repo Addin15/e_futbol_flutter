@@ -1,4 +1,7 @@
 import 'package:e_futbol_flutter/auth.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/compare.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/nearby.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/search.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -27,10 +30,17 @@ class MyApp extends StatelessWidget {
               create: (context) => AuthService(),
             ),
           ],
-          child: const MaterialApp(
+          child: MaterialApp(
             title: 'E-Futbol',
             debugShowCheckedModeBanner: false,
-            home: AuthWrapper(),
+            initialRoute: '/',
+            routes: {
+              '/': (context) => const AuthWrapper(),
+              '/home': (context) => const Home(),
+              '/nearby': (context) => const NearbyArena(),
+              '/search': (context) => const SearchArena(),
+              '/compare': (context) => const CompareArena(),
+            },
           ),
         );
       },
