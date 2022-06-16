@@ -159,7 +159,9 @@ class _SearchArenaState extends State<SearchArena> {
                                                 context,
                                                 CupertinoPageRoute(
                                                     builder: (context) =>
-                                                        ArenaDetails()));
+                                                        ArenaDetails(
+                                                          arena: arena,
+                                                        )));
                                           },
                                           child: Text(
                                             'Details',
@@ -320,7 +322,9 @@ class _SearchArenaState extends State<SearchArena> {
                                                     context,
                                                     CupertinoPageRoute(
                                                         builder: (context) =>
-                                                            ArenaDetails()));
+                                                            ArenaDetails(
+                                                              arena: arena,
+                                                            )));
                                               },
                                               child: Text(
                                                 'Details',
