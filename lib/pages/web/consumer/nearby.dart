@@ -14,32 +14,39 @@ class _NearbyArenaState extends State<NearbyArena> {
 
   @override
   Widget build(BuildContext context) {
-    return arenas.isEmpty
-        ? Container(
-            height: 75.h,
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'icons/notfound.png',
-                  width: 30.sp,
-                  height: 30.sp,
-                ),
-                SizedBox(width: 3.w),
-                Text(
-                  'No nearby arena found',
-                  style: TextStyle(
-                    fontSize: 4.sp,
-                    fontWeight: FontWeight.bold,
+    return Navigator(onGenerateRoute: (settings) {
+      return MaterialPageRoute(builder: (context) {
+        return Container(
+          height: 85.h,
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: arenas.isEmpty
+              ? Container(
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'icons/notfound.png',
+                        width: 30.sp,
+                        height: 30.sp,
+                      ),
+                      SizedBox(width: 3.w),
+                      Text(
+                        'No nearby arena found',
+                        style: TextStyle(
+                          fontSize: 4.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
+                )
+              : GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, crossAxisSpacing: 2.w),
                 ),
-              ],
-            ),
-          )
-        : GridView(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, crossAxisSpacing: 2.w),
-          );
+        );
+      });
+    });
   }
 }

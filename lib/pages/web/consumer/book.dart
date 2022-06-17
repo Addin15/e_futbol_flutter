@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class ArenaBook extends StatefulWidget {
   const ArenaBook({Key? key}) : super(key: key);
@@ -10,8 +11,14 @@ class ArenaBook extends StatefulWidget {
 class _ArenaBookState extends State<ArenaBook> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Book'),
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.symmetric(horizontal: 5.w),
+      child: ListView(
+        shrinkWrap: true,
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        children: [],
+      ),
     );
   }
 }

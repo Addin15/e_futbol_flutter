@@ -7,19 +7,19 @@ Widget customTextFormField({
   required FocusNode focusNode,
   required String hintText,
   bool isObscured = false,
-  bool isSearch = false,
+  Icon? prefixIcon,
   Function(String)? onChange,
+  String? Function(String?)? validator,
 }) =>
     TextFormField(
       controller: controller,
       focusNode: focusNode,
       obscureText: isObscured,
       onChanged: onChange,
+      validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: !isSearch
-            ? const SizedBox.shrink()
-            : Icon(Icons.search_outlined, size: 4.sp),
+        prefixIcon: prefixIcon,
         isDense: true,
         alignLabelWithHint: true,
         border: OutlineInputBorder(

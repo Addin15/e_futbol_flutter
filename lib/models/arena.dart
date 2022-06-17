@@ -34,11 +34,11 @@ class Arena {
         numberField: int.parse(map['number_field']),
         grassType: map['grass_type'],
         numberLight: int.parse(map['number_light']),
-        subsBench: map['subs_bench'] == 1 ? true : false,
+        subsBench: int.parse(map['subs_bench']) == 1 ? true : false,
         dayPrice: double.parse(map['day_price']),
         nightPrice: double.parse(map['night_price']),
-        refferee: map['refferee'] == 1 ? true : false,
-        spectatorsSeat: map['spectators_seat'] == 1 ? true : false,
+        refferee: int.parse(map['refferee']) == 1 ? true : false,
+        spectatorsSeat: int.parse(map['spectators_seat']) == 1 ? true : false,
         address: map['arena_address'],
       );
 }

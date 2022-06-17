@@ -1,13 +1,19 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/home.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/location.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/review.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 class ArenaDetails extends StatefulWidget {
-  const ArenaDetails({this.arena, Key? key}) : super(key: key);
+  const ArenaDetails({this.jumpToCompare, this.arena, Key? key})
+      : super(key: key);
 
   final Arena? arena;
+  final Function(HomePage, Map<String, dynamic>)? jumpToCompare;
 
   @override
   State<ArenaDetails> createState() => _ArenaDetailsState();
@@ -28,6 +34,7 @@ class _ArenaDetailsState extends State<ArenaDetails> {
       color: Colors.white,
       child: ListView(
         shrinkWrap: true,
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         physics: const ScrollPhysics(),
         children: [
           Container(
@@ -323,7 +330,7 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -364,7 +371,7 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: 8.h),
                   SizedBox(
                     width: 45.w,
                     child: GridView(
@@ -372,84 +379,119 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, crossAxisSpacing: 3.w),
                       children: [
-                        Card(
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2.sp)),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.5.h),
-                            decoration: BoxDecoration(
+                        InkWell(
+                          onTap: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => ArenaReview())),
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2.sp)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'icons/location_open.png',
-                                  fit: BoxFit.cover,
-                                  color: primary,
-                                ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  'Review',
-                                  style:
-                                      TextStyle(fontSize: 3.sp, color: primary),
-                                ),
-                              ],
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.5.h),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2.sp)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 1.5.w),
+                                      child: Image.asset(
+                                        'icons/review.png',
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    'Review',
+                                    style: TextStyle(
+                                        fontSize: 3.sp, color: primary),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        Card(
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2.sp)),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.5.h),
-                            decoration: BoxDecoration(
+                        InkWell(
+                          onTap: () => Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => ArenaLocation())),
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2.sp)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'icons/location_open.png',
-                                  fit: BoxFit.cover,
-                                  color: primary,
-                                ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  'Location',
-                                  style:
-                                      TextStyle(fontSize: 3.sp, color: primary),
-                                ),
-                              ],
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.5.h),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2.sp)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 1.5.w),
+                                      child: Image.asset(
+                                        'icons/location.png',
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    'Location',
+                                    style: TextStyle(
+                                        fontSize: 3.sp, color: primary),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                        Card(
-                          elevation: 3,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(2.sp)),
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 2.w, vertical: 1.5.h),
-                            decoration: BoxDecoration(
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                            widget.jumpToCompare!(HomePage.compare, {
+                              'arena': arena,
+                            });
+                          },
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(2.sp)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'icons/location_open.png',
-                                  fit: BoxFit.cover,
-                                  color: primary,
-                                ),
-                                SizedBox(height: 2.h),
-                                Text(
-                                  'Compare',
-                                  style:
-                                      TextStyle(fontSize: 3.sp, color: primary),
-                                ),
-                              ],
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 2.w, vertical: 1.5.h),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2.sp)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 1.5.w),
+                                      child: Image.asset(
+                                        'icons/scale.png',
+                                        fit: BoxFit.fitWidth,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 2.h),
+                                  Text(
+                                    'Compare',
+                                    style: TextStyle(
+                                        fontSize: 3.sp, color: primary),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

@@ -146,35 +146,57 @@ class HomeContent extends StatefulWidget {
 class _HomeContentState extends State<HomeContent> {
   HomePage selectedPage = HomePage.nearby;
 
-  String selectedRoute = '/nearby';
+  final PageController _pageController = PageController();
+
+  Arena? prepickArena;
+
+  changePage(HomePage page, Map<String, dynamic> data) {
+    setState(() {
+      if (page == HomePage.nearby) {
+        selectedPage = page;
+        _pageController.jumpToPage(0);
+      } else if (page == HomePage.search) {
+        selectedPage = page;
+        _pageController.jumpToPage(1);
+      } else {
+        if (data['arena'] != null) {
+          prepickArena = data['arena'] as Arena;
+        }
+        selectedPage = page;
+        _pageController.jumpToPage(2);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: 5.w,
         vertical: 3.h,
       ),
       child: ListView(
         shrinkWrap: true,
         children: [
-          tabBar(),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+            child: tabBar(),
+          ),
           SizedBox(height: 2.h),
           SizedBox(
-            height: 85.h,
-            child: Navigator(
-              initialRoute: selectedRoute,
-              onGenerateRoute: (settings) {
-                return MaterialPageRoute(builder: (_) {
-                  if (selectedPage == HomePage.nearby) {
-                    return const NearbyArena();
-                  } else if (selectedPage == HomePage.search) {
-                    return const SearchArena();
-                  } else {
-                    return const CompareArena();
-                  }
-                });
-              },
+            height: 75.h,
+            child: MultiProvider(
+              providers: [
+                Provider<Arena?>.value(value: prepickArena),
+              ],
+              child: PageView(
+                controller: _pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  NearbyArena(),
+                  SearchArena(jumpToCompare: changePage),
+                  CompareArena(),
+                ],
+              ),
             ),
           ),
         ],
@@ -202,7 +224,7 @@ class _HomeContentState extends State<HomeContent> {
             onPressed: () {
               setState(() {
                 selectedPage = HomePage.nearby;
-                selectedRoute = '/nearby';
+                _pageController.jumpToPage(0);
               });
             },
             child: Row(
@@ -246,7 +268,7 @@ class _HomeContentState extends State<HomeContent> {
             onPressed: () {
               setState(() {
                 selectedPage = HomePage.search;
-                selectedRoute = '/search';
+                _pageController.jumpToPage(1);
               });
             },
             child: Row(
@@ -290,7 +312,7 @@ class _HomeContentState extends State<HomeContent> {
             onPressed: () {
               setState(() {
                 selectedPage = HomePage.compare;
-                selectedRoute = '/compare';
+                _pageController.jumpToPage(2);
               });
             },
             child: Row(

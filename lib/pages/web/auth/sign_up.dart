@@ -16,6 +16,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -53,110 +54,158 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
             SizedBox(height: 2.h),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.sp),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 5.w,
-                  vertical: 10.h,
+            Form(
+              key: _formKey,
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.sp),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    customTextFormField(
-                      controller: _usernameController,
-                      focusNode: _usernameFocus,
-                      hintText: 'Username',
-                    ),
-                    SizedBox(height: 2.h),
-                    customTextFormField(
-                      controller: _emailController,
-                      focusNode: _emailFocus,
-                      hintText: 'E-mail',
-                    ),
-                    SizedBox(height: 2.h),
-                    customTextFormField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocus,
-                      isObscured: true,
-                      hintText: 'Password',
-                    ),
-                    SizedBox(height: 2.h),
-                    customTextFormField(
-                      controller: _confirmPasswordController,
-                      focusNode: _confirmPasswordFocus,
-                      isObscured: true,
-                      hintText: 'Confirm Password',
-                    ),
-                    SizedBox(height: 3.h),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2.sp),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5.w,
+                    vertical: 10.h,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      customTextFormField(
+                        controller: _usernameController,
+                        focusNode: _usernameFocus,
+                        hintText: 'Username',
+                        prefixIcon: Icon(
+                          Icons.person_outline,
+                          size: 3.sp,
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 3.w,
-                          vertical: 2.5.h,
-                        ),
-                        backgroundColor: primary,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Username can\'t be empty';
+                          } else {
+                            return null;
+                          }
+                        },
                       ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-
-                        AuthService _auth = Provider.of<AuthService>(
-                          context,
-                          listen: false,
-                        );
-
-                        await _auth.register(
-                          username: _usernameController.text,
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
-
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: 3.sp,
-                          color: Colors.white,
+                      SizedBox(height: 2.h),
+                      customTextFormField(
+                          controller: _emailController,
+                          focusNode: _emailFocus,
+                          hintText: 'E-mail',
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            size: 3.sp,
+                          ),
+                          validator: (value) {
+                            if (!RegExp(
+                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                .hasMatch(value!)) {
+                              return 'Email is not valid';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      SizedBox(height: 2.h),
+                      customTextFormField(
+                          controller: _passwordController,
+                          focusNode: _passwordFocus,
+                          isObscured: true,
+                          hintText: 'Password',
+                          prefixIcon: Icon(
+                            Icons.password_outlined,
+                            size: 3.sp,
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return 'Password should at least 6 characters';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      SizedBox(height: 2.h),
+                      customTextFormField(
+                          controller: _confirmPasswordController,
+                          focusNode: _confirmPasswordFocus,
+                          isObscured: true,
+                          hintText: 'Confirm Password',
+                          prefixIcon: Icon(
+                            Icons.password_outlined,
+                            size: 3.sp,
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return 'Password should at least 6 characters';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      SizedBox(height: 3.h),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.sp),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 3.w,
+                            vertical: 2.5.h,
+                          ),
+                          backgroundColor: primary,
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Already have an account?',
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          if (_formKey.currentState!.validate()) {
+                            AuthService _auth = Provider.of<AuthService>(
+                              context,
+                              listen: false,
+                            );
+
+                            await _auth.register(
+                              username: _usernameController.text,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                          }
+
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: Text(
+                          'Sign Up',
                           style: TextStyle(
                             fontSize: 3.sp,
+                            color: Colors.white,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            widget.changePage!(2);
-                          },
-                          child: Text(
-                            'Sign In',
+                      ),
+                      SizedBox(height: 2.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Already have an account?',
                             style: TextStyle(
                               fontSize: 3.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          TextButton(
+                            onPressed: () {
+                              widget.changePage!(2);
+                            },
+                            child: Text(
+                              'Sign In',
+                              style: TextStyle(
+                                fontSize: 3.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

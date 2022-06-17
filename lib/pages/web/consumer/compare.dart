@@ -6,6 +6,7 @@ import 'package:e_futbol_flutter/controllers/arena_controller.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class CompareArena extends StatefulWidget {
@@ -38,543 +39,563 @@ class _CompareArenaState extends State<CompareArena> {
   }
 
   @override
+  void initState() {
+    Arena? arena = Provider.of<Arena?>(context, listen: false);
+
+    if (arena != null) {
+      firstArena = arena;
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    log(firstArena.toString());
+    return Navigator(onGenerateRoute: (settings) {
+      return MaterialPageRoute(builder: (context) {
+        return ListView(
+          shrinkWrap: true,
           children: [
-            Expanded(
-              child: firstArena == null
-                  ? Container(
-                      height: 50.h,
-                      padding: EdgeInsets.only(top: 18.h),
-                      alignment: Alignment.center,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(2.sp),
-                        child: IconButton(
-                          onPressed: () {
-                            selectArena(0);
-                          },
-                          iconSize: 15.sp,
-                          icon: Image.asset(
-                            'icons/add.png',
-                            height: 100.h,
-                            width: 100.h,
-                            fit: BoxFit.contain,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: firstArena == null
+                      ? Container(
+                          height: 50.h,
+                          padding: EdgeInsets.only(top: 18.h),
+                          alignment: Alignment.center,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(2.sp),
+                            child: IconButton(
+                              onPressed: () {
+                                selectArena(0);
+                              },
+                              iconSize: 15.sp,
+                              icon: Image.asset(
+                                'icons/add.png',
+                                height: 100.h,
+                                width: 100.h,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )
-                  : Card(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.w, vertical: 10.h),
-                        child: Column(
-                          children: [
-                            MouseRegion(
-                              onEnter: (_) => setState(() {
-                                isHoverFirst = true;
-                              }),
-                              onExit: (_) => setState(() {
-                                isHoverFirst = false;
-                              }),
-                              child: Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(2.sp),
-                                    child: Image.asset(
-                                      'dummy/dummy.jpg',
-                                      height: 50.h,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  !isHoverFirst
-                                      ? const SizedBox.shrink()
-                                      : Container(
+                        )
+                      : Card(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3.w, vertical: 10.h),
+                            child: Column(
+                              children: [
+                                MouseRegion(
+                                  onEnter: (_) => setState(() {
+                                    isHoverFirst = true;
+                                  }),
+                                  onExit: (_) => setState(() {
+                                    isHoverFirst = false;
+                                  }),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(2.sp),
+                                        child: Image.asset(
+                                          'dummy/dummy.jpg',
                                           height: 50.h,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Colors.black87.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(2.sp),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 1.w,
-                                                  vertical: 2.h),
-                                              backgroundColor: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(1.sp),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              selectArena(0);
-                                            },
-                                            child: Text(
-                                              'Change Arena',
-                                              style: TextStyle(
-                                                fontSize: 3.sp,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ),
+                                          fit: BoxFit.cover,
                                         ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(
-                              firstArena!.arenaName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 5.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5.h),
-                            // provider name
-                            Text(
-                              firstArena!.providerName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // number field
-                            Text(
-                              firstArena!.numberField.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // grass type
-                            Text(
-                              firstArena!.grassType!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // number light
-                            Text(
-                              firstArena!.numberLight.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // day price
-                            Text(
-                              'RM${firstArena!.dayPrice!.toStringAsFixed(2)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // night price
-                            Text(
-                              'RM${firstArena!.nightPrice!.toStringAsFixed(2)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // refferee
-                            Text(
-                              firstArena!.refferee! == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // subs bench
-                            Text(
-                              firstArena!.subsBench! == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // specs seat
-                            Text(
-                              firstArena!.spectatorsSeat! == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // address
-                            Text(
-                              firstArena!.address!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
-            SizedBox(width: 2.w),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 10.h),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 50.h,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(2.sp),
-                        child: Image.asset(
-                          'icons/compare_icon.png',
-                          height: 10.h,
-                          width: 10.h,
-                          fit: BoxFit.fitWidth,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Text(
-                      's',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 5.sp,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 7.h),
-                    // provider name
-                    firstArena == null && secondArena == null
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: [
-                              Text(
-                                'Provider',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                      ),
+                                      !isHoverFirst
+                                          ? const SizedBox.shrink()
+                                          : Container(
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black87
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(2.sp),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 1.w,
+                                                      vertical: 2.h),
+                                                  backgroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1.sp),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  selectArena(0);
+                                                },
+                                                child: Text(
+                                                  'Change Arena',
+                                                  style: TextStyle(
+                                                    fontSize: 3.sp,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // number field
-                              Text(
-                                'Number of field',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 2.h),
+                                Text(
+                                  firstArena!.arenaName!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 5.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // grass type
-                              Text(
-                                'Grass Type',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 5.h),
+                                // provider name
+                                Text(
+                                  firstArena!.providerName!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // number light
-                              Text(
-                                'Number of light',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // number field
+                                Text(
+                                  firstArena!.numberField.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // day price
-                              Text(
-                                'Day price',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // grass type
+                                Text(
+                                  firstArena!.grassType!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // night price
-                              Text(
-                                'Night price',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // number light
+                                Text(
+                                  firstArena!.numberLight.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // refferee
-                              Text(
-                                'Refferee Service',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // day price
+                                Text(
+                                  'RM${firstArena!.dayPrice!.toStringAsFixed(2)}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // subs bench
-                              Text(
-                                'Substitutions bench',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // night price
+                                Text(
+                                  'RM${firstArena!.nightPrice!.toStringAsFixed(2)}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // specs seat
-                              Text(
-                                'Spectators seat',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // refferee
+                                Text(
+                                  firstArena!.refferee! == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                              // address
-                              Text(
-                                'Address',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 4.sp,
-                                  fontWeight: FontWeight.bold,
+                                SizedBox(height: 4.h),
+                                // subs bench
+                                Text(
+                                  firstArena!.subsBench! == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(height: 4.h),
-                            ],
+                                SizedBox(height: 4.h),
+                                // specs seat
+                                Text(
+                                  firstArena!.spectatorsSeat! == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // address
+                                Text(
+                                  firstArena!.address!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                              ],
+                            ),
                           ),
-                  ],
+                        ),
                 ),
-              ),
-            ),
-            SizedBox(width: 2.w),
-            Expanded(
-              child: secondArena == null
-                  ? Container(
-                      height: 50.h,
-                      padding: EdgeInsets.only(top: 18.h),
-                      alignment: Alignment.center,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(2.sp),
-                        child: IconButton(
-                          onPressed: () {
-                            selectArena(1);
-                          },
-                          iconSize: 15.sp,
-                          icon: Image.asset(
-                            'icons/add.png',
-                            height: 100.h,
-                            width: 100.h,
-                            fit: BoxFit.contain,
+                SizedBox(width: 2.w),
+                Expanded(
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 3.w, vertical: 10.h),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 50.h,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(2.sp),
+                            child: Image.asset(
+                              'icons/compare_icon.png',
+                              height: 10.h,
+                              width: 10.h,
+                              fit: BoxFit.fitWidth,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  : Card(
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 3.w, vertical: 10.h),
-                        child: Column(
-                          children: [
-                            MouseRegion(
-                              onEnter: (_) => setState(() {
-                                isHoverSecond = true;
-                              }),
-                              onExit: (_) => setState(() {
-                                isHoverSecond = false;
-                              }),
-                              child: Stack(
+                        SizedBox(height: 2.h),
+                        Text(
+                          's',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 5.sp,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 7.h),
+                        // provider name
+                        firstArena == null && secondArena == null
+                            ? const SizedBox.shrink()
+                            : Column(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(2.sp),
-                                    child: Image.asset(
-                                      'dummy/dummy.jpg',
-                                      height: 50.h,
-                                      fit: BoxFit.cover,
+                                  Text(
+                                    'Provider',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  !isHoverSecond
-                                      ? const SizedBox.shrink()
-                                      : Container(
-                                          height: 50.h,
-                                          decoration: BoxDecoration(
-                                            color:
-                                                Colors.black87.withOpacity(0.5),
-                                            borderRadius:
-                                                BorderRadius.circular(2.sp),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 1.w,
-                                                  vertical: 2.h),
-                                              backgroundColor: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(1.sp),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              selectArena(1);
-                                            },
-                                            child: Text(
-                                              'Change Arena',
-                                              style: TextStyle(
-                                                fontSize: 3.sp,
-                                                color: Colors.black54,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                  SizedBox(height: 4.h),
+                                  // number field
+                                  Text(
+                                    'Number of field',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // grass type
+                                  Text(
+                                    'Grass Type',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // number light
+                                  Text(
+                                    'Number of light',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // day price
+                                  Text(
+                                    'Day price',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // night price
+                                  Text(
+                                    'Night price',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // refferee
+                                  Text(
+                                    'Refferee Service',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // subs bench
+                                  Text(
+                                    'Substitutions bench',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // specs seat
+                                  Text(
+                                    'Spectators seat',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  // address
+                                  Text(
+                                    'Address',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 4.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4.h),
                                 ],
                               ),
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(
-                              secondArena!.arenaName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 5.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 5.h),
-                            // provider name
-                            Text(
-                              secondArena!.providerName!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // number field
-                            Text(
-                              secondArena!.numberField.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // grass type
-                            Text(
-                              secondArena!.grassType!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // number light
-                            Text(
-                              secondArena!.numberLight.toString(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // day price
-                            Text(
-                              'RM${secondArena!.dayPrice!.toStringAsFixed(2)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // night price
-                            Text(
-                              'RM${secondArena!.nightPrice!.toStringAsFixed(2)}',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // refferee
-                            Text(
-                              secondArena!.refferee == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // subs bench
-                            Text(
-                              secondArena!.subsBench == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // specs seat
-                            Text(
-                              secondArena!.spectatorsSeat == true
-                                  ? 'Provided'
-                                  : 'Not Provided',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            // address
-                            Text(
-                              secondArena!.address!,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 4.sp,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
-            ),
+                  ),
+                ),
+                SizedBox(width: 2.w),
+                Expanded(
+                  child: secondArena == null
+                      ? Container(
+                          height: 50.h,
+                          padding: EdgeInsets.only(top: 18.h),
+                          alignment: Alignment.center,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(2.sp),
+                            child: IconButton(
+                              onPressed: () {
+                                selectArena(1);
+                              },
+                              iconSize: 15.sp,
+                              icon: Image.asset(
+                                'icons/add.png',
+                                height: 100.h,
+                                width: 100.h,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Card(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 3.w, vertical: 10.h),
+                            child: Column(
+                              children: [
+                                MouseRegion(
+                                  onEnter: (_) => setState(() {
+                                    isHoverSecond = true;
+                                  }),
+                                  onExit: (_) => setState(() {
+                                    isHoverSecond = false;
+                                  }),
+                                  child: Stack(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(2.sp),
+                                        child: Image.asset(
+                                          'dummy/dummy.jpg',
+                                          height: 50.h,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      !isHoverSecond
+                                          ? const SizedBox.shrink()
+                                          : Container(
+                                              height: 50.h,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black87
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(2.sp),
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: TextButton(
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 1.w,
+                                                      vertical: 2.h),
+                                                  backgroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            1.sp),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  selectArena(1);
+                                                },
+                                                child: Text(
+                                                  'Change Arena',
+                                                  style: TextStyle(
+                                                    fontSize: 3.sp,
+                                                    color: Colors.black54,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 2.h),
+                                Text(
+                                  secondArena!.arenaName!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 5.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 5.h),
+                                // provider name
+                                Text(
+                                  secondArena!.providerName!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // number field
+                                Text(
+                                  secondArena!.numberField.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // grass type
+                                Text(
+                                  secondArena!.grassType!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // number light
+                                Text(
+                                  secondArena!.numberLight.toString(),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // day price
+                                Text(
+                                  'RM${secondArena!.dayPrice!.toStringAsFixed(2)}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // night price
+                                Text(
+                                  'RM${secondArena!.nightPrice!.toStringAsFixed(2)}',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // refferee
+                                Text(
+                                  secondArena!.refferee == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // subs bench
+                                Text(
+                                  secondArena!.subsBench == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // specs seat
+                                Text(
+                                  secondArena!.spectatorsSeat == true
+                                      ? 'Provided'
+                                      : 'Not Provided',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                                // address
+                                Text(
+                                  secondArena!.address!,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 4.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 4.h),
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
+              ],
+            )
           ],
-        )
-      ],
-    );
+        );
+      });
+    });
   }
 }
 
@@ -618,7 +639,10 @@ class _SearchDialogState extends State<SearchDialog> {
               controller: _searchController,
               focusNode: _searchFocus,
               hintText: 'Search Arena',
-              isSearch: true,
+              prefixIcon: Icon(
+                Icons.search_outlined,
+                size: 3.sp,
+              ),
               onChange: (query) async {
                 setState(() {
                   searching = true;

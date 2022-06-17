@@ -16,6 +16,8 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -48,97 +50,124 @@ class _SignInState extends State<SignIn> {
               ),
             ),
             SizedBox(height: 2.h),
-            Card(
-              elevation: 5,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2.sp),
-              ),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 5.w,
-                  vertical: 10.h,
+            Form(
+              key: _formKey,
+              child: Card(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(2.sp),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 2.h),
-                    customTextFormField(
-                      controller: _emailController,
-                      focusNode: _emailFocus,
-                      hintText: 'E-mail',
-                    ),
-                    SizedBox(height: 2.h),
-                    customTextFormField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocus,
-                      isObscured: true,
-                      hintText: 'Password',
-                    ),
-                    SizedBox(height: 3.h),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(2.sp),
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5.w,
+                    vertical: 10.h,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 2.h),
+                      customTextFormField(
+                          controller: _emailController,
+                          focusNode: _emailFocus,
+                          hintText: 'E-mail',
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            size: 3.sp,
+                          ),
+                          validator: (value) {
+                            if (!RegExp(
+                                    r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+                                .hasMatch(value!)) {
+                              return 'Email is not valid';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      SizedBox(height: 2.h),
+                      customTextFormField(
+                          controller: _passwordController,
+                          focusNode: _passwordFocus,
+                          isObscured: true,
+                          hintText: 'Password',
+                          prefixIcon: Icon(
+                            Icons.password_outlined,
+                            size: 3.sp,
+                          ),
+                          validator: (value) {
+                            if (value!.length < 6) {
+                              return 'Password should at least 6 characters';
+                            } else {
+                              return null;
+                            }
+                          }),
+                      SizedBox(height: 3.h),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2.sp),
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 3.w,
+                            vertical: 2.5.h,
+                          ),
+                          backgroundColor: primary,
                         ),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 3.w,
-                          vertical: 2.5.h,
-                        ),
-                        backgroundColor: primary,
-                      ),
-                      onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
+                        onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
 
-                        AuthService _auth = Provider.of<AuthService>(
-                          context,
-                          listen: false,
-                        );
+                          if (_formKey.currentState!.validate()) {
+                            AuthService _auth = Provider.of<AuthService>(
+                              context,
+                              listen: false,
+                            );
 
-                        await _auth.login(
-                          email: _emailController.text,
-                          password: _passwordController.text,
-                        );
+                            await _auth.login(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            );
+                          }
 
-                        setState(() {
-                          isLoading = false;
-                        });
-                      },
-                      child: Text(
-                        'Sign In',
-                        style: TextStyle(
-                          fontSize: 3.sp,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 2.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Don\'t have an account?',
+                          setState(() {
+                            isLoading = false;
+                          });
+                        },
+                        child: Text(
+                          'Sign In',
                           style: TextStyle(
                             fontSize: 3.sp,
+                            color: Colors.white,
                           ),
                         ),
-                        TextButton(
-                          onPressed: () {
-                            widget.changePage!(1);
-                          },
-                          child: Text(
-                            'Sign Up',
+                      ),
+                      SizedBox(height: 2.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Don\'t have an account?',
                             style: TextStyle(
                               fontSize: 3.sp,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          TextButton(
+                            onPressed: () {
+                              widget.changePage!(1);
+                            },
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                fontSize: 3.sp,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
