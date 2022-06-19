@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:e_futbol_flutter/config/config.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
+import 'package:e_futbol_flutter/models/field.dart';
 import 'package:http/http.dart';
 
 class ArenaController {
@@ -42,5 +43,23 @@ class ArenaController {
     }
 
     return <Arena>[];
+  }
+
+  static getFields({required String arenaID}) async {
+    String url = hostName + api + '/arenas/$arenaID/field';
+
+    var response = await get(
+      Uri.parse(url),
+      headers: headersWithoutToken(),
+    );
+
+    if (response.statusCode == 200) {
+      List arenas = jsonDecode(response.body);
+      return arenas
+          .map((arena) => Field.fromMap(arena as Map<String, dynamic>))
+          .toList();
+    }
+
+    return <Field>[];
   }
 }

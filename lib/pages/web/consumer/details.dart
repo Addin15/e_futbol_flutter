@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/book.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/home.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/location.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/review.dart';
@@ -353,7 +354,12 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                       ),
                       SizedBox(width: 3.w),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.push(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => ArenaBook(
+                                      arena: arena!,
+                                    ))),
                         style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2.sp),

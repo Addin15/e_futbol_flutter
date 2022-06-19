@@ -11,6 +11,9 @@ class Arena {
   bool? refferee;
   bool? spectatorsSeat;
   String? address;
+  int? startDayTime;
+  int? endDayTime;
+  int? endNightTime;
 
   Arena({
     this.id,
@@ -25,20 +28,26 @@ class Arena {
     this.refferee,
     this.spectatorsSeat,
     this.address,
+    this.startDayTime,
+    this.endDayTime,
+    this.endNightTime,
   });
 
   factory Arena.fromMap(Map<String, dynamic> map) => Arena(
         id: map['id'],
         arenaName: map['arena_name'],
         providerName: map['provider_name'],
-        numberField: int.parse(map['number_field']),
+        numberField: map['number_field'],
         grassType: map['grass_type'],
-        numberLight: int.parse(map['number_light']),
-        subsBench: int.parse(map['subs_bench']) == 1 ? true : false,
-        dayPrice: double.parse(map['day_price']),
-        nightPrice: double.parse(map['night_price']),
-        refferee: int.parse(map['refferee']) == 1 ? true : false,
-        spectatorsSeat: int.parse(map['spectators_seat']) == 1 ? true : false,
+        numberLight: map['number_light'],
+        subsBench: map['subs_bench'] == 1 ? true : false,
+        dayPrice: map['day_price'].toDouble(),
+        nightPrice: map['night_price'].toDouble(),
+        refferee: map['refferee'] == 1 ? true : false,
+        spectatorsSeat: map['spectators_seat'] == 1 ? true : false,
         address: map['arena_address'],
+        startDayTime: int.parse(map['start_day_time']),
+        endDayTime: int.parse(map['end_day_time']),
+        endNightTime: int.parse(map['end_night_time']),
       );
 }

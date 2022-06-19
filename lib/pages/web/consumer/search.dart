@@ -209,7 +209,9 @@ class _SearchArenaState extends State<SearchArena> {
                                                       context,
                                                       CupertinoPageRoute(
                                                           builder: (context) =>
-                                                              ArenaBook()));
+                                                              ArenaBook(
+                                                                arena: arena,
+                                                              )));
                                                 },
                                                 child: Text(
                                                   'Book Now',
