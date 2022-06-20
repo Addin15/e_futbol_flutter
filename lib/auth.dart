@@ -8,7 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class AuthService extends ChangeNotifier {
   User? _user;
 
-  get user => _user;
+  User? get user => _user;
 
   AuthService() {
     initData();

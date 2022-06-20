@@ -211,6 +211,9 @@ class _SearchArenaState extends State<SearchArena> {
                                                           builder: (context) =>
                                                               ArenaBook(
                                                                 arena: arena,
+                                                                jumpToCompare:
+                                                                    widget
+                                                                        .jumpToCompare,
                                                               )));
                                                 },
                                                 child: Text(

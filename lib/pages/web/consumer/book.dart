@@ -1,23 +1,51 @@
 import 'dart:developer';
 
+import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 import 'package:e_futbol_flutter/controllers/arena_controller.dart';
 import 'package:e_futbol_flutter/controllers/field_controller.dart';
 import 'package:e_futbol_flutter/models/arena.dart';
 import 'package:e_futbol_flutter/models/booking.dart';
 import 'package:e_futbol_flutter/models/field.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/home.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 class ArenaBook extends StatefulWidget {
-  const ArenaBook({required this.arena, Key? key}) : super(key: key);
+  const ArenaBook({required this.arena, this.jumpToCompare, Key? key})
+      : super(key: key);
 
   final Arena arena;
+  final Function(HomePage, Map<String, dynamic>)? jumpToCompare;
 
   @override
   State<ArenaBook> createState() => _ArenaBookState();
+}
+
+class Prebook {
+  int fieldID;
+  String fieldName;
+  DateTime date;
+  int time;
+  double price;
+
+  Prebook({
+    required this.fieldID,
+    required this.fieldName,
+    required this.date,
+    required this.time,
+    required this.price,
+  });
+
+  toMap() => {
+        'field_id': fieldID,
+        'book_date': DateFormat('yyyy-MM-dd').format(date),
+        'time': time,
+      };
 }
 
 class _ArenaBookState extends State<ArenaBook> {
@@ -30,7 +58,7 @@ class _ArenaBookState extends State<ArenaBook> {
   int length = 0;
   List<Booking>? booked;
   bool isGettingAvailability = false;
-  List<int> selected = [];
+  List<Prebook> selected = [];
 
   getData() async {
     List<Field> data =
@@ -54,8 +82,6 @@ class _ArenaBookState extends State<ArenaBook> {
       List<Booking> bookingData = await FieldController.getAvailability(
           selectedField.toString(),
           DateFormat('yyyy-MM-dd').format(selectedDate!));
-
-      log(bookingData.first.time.toString());
 
       setState(() {
         booked = bookingData;
@@ -250,6 +276,10 @@ class _ArenaBookState extends State<ArenaBook> {
                                               },
                                               child: Card(
                                                 elevation: 3,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2.sp)),
                                                 child: Container(
                                                   height: 10.sp,
                                                   width: 25.sp,
@@ -272,6 +302,64 @@ class _ArenaBookState extends State<ArenaBook> {
                                       );
                                     },
                                   ),
+                        SizedBox(height: 4.h),
+                        selected.isEmpty
+                            ? const SizedBox.shrink()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        'RM' +
+                                            calculateTotal().toStringAsFixed(2),
+                                        style: TextStyle(
+                                            color: Colors.red.shade600,
+                                            fontSize: 6.sp,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(height: 4.h),
+                                      TextButton(
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 2.w, vertical: 2.h),
+                                          backgroundColor: primary,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(2.sp)),
+                                        ),
+                                        onPressed: () async {
+                                          bool? res = await Navigator.of(
+                                                  context,
+                                                  rootNavigator: true)
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ArenaPayment(
+                                                arena: widget.arena,
+                                                selected: selected,
+                                              ),
+                                            ),
+                                          );
+                                          if (res != null) {
+                                            if (res == true) {
+                                              widget.jumpToCompare!(
+                                                  HomePage.nearby, {});
+                                            }
+                                          }
+                                        },
+                                        child: Text(
+                                          'Proceed to Payment',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 3.sp),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                       ],
                     ),
                   ),
@@ -281,9 +369,20 @@ class _ArenaBookState extends State<ArenaBook> {
           );
   }
 
+  calculateTotal() {
+    double total = 0;
+    for (int i = 0; i < selected.length; i++) {
+      total += selected[i].price;
+    }
+
+    return total;
+  }
+
   checkIfSelected(int start) {
     for (int i = 0; i < selected.length; i++) {
-      if (selected[i] == start) {
+      if (selected[i].date == selectedDate! &&
+          selected[i].time == start &&
+          selected[i].fieldID == selectedField!) {
         return true;
       }
     }
@@ -302,16 +401,24 @@ class _ArenaBookState extends State<ArenaBook> {
   addOrRemove(int start) {
     if (!checkIfBooked(start)) {
       for (int i = 0; i < selected.length; i++) {
-        if (selected[i] == start) {
+        if (selected[i].date == selectedDate! &&
+            selected[i].time == start &&
+            selected[i].fieldID == selectedField!) {
           setState(() {
-            selected.remove(start);
+            selected.removeAt(i);
           });
           return;
         }
       }
 
       setState(() {
-        selected.add(start);
+        selected.add(Prebook(
+            fieldID: selectedField!,
+            fieldName:
+                fields.where((field) => field.id == selectedField).first.name!,
+            date: selectedDate!,
+            time: start,
+            price: widget.arena.dayPrice!));
       });
       return;
     }

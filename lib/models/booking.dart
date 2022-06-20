@@ -12,6 +12,6 @@ class Booking {
   factory Booking.fromMap(Map<String, dynamic> map) => Booking(
         id: map['id'],
         bookDate: map['book_date'],
-        time: int.parse(map['time']),
+        time: map['time'],
       );
 }

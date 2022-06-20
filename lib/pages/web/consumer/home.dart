@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
               ),
             ),
             Text(
-              '${authService.user.username}!',
+              '${authService.user!.username}!',
               style: TextStyle(
                 color: Colors.black87,
                 fontSize: 3.sp,
@@ -154,9 +154,11 @@ class _HomeContentState extends State<HomeContent> {
     setState(() {
       if (page == HomePage.nearby) {
         selectedPage = page;
+        prepickArena = null;
         _pageController.jumpToPage(0);
       } else if (page == HomePage.search) {
         selectedPage = page;
+        prepickArena = null;
         _pageController.jumpToPage(1);
       } else {
         if (data['arena'] != null) {

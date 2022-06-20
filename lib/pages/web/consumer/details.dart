@@ -359,6 +359,7 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                             CupertinoPageRoute(
                                 builder: (context) => ArenaBook(
                                       arena: arena!,
+                                      jumpToCompare: widget.jumpToCompare,
                                     ))),
                         style: TextButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -389,7 +390,9 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                           onTap: () => Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => ArenaReview())),
+                                  builder: (context) => ArenaReview(
+                                        arena: widget.arena!,
+                                      ))),
                           child: Card(
                             elevation: 3,
                             shape: RoundedRectangleBorder(
