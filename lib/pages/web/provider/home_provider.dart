@@ -1,4 +1,3 @@
-import 'package:e_futbol_flutter/pages/web/provider/dashboard_provider.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -141,11 +140,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 0,
                 title: 'Dashboard',
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const DashboardProvider()),
-                  );
+                  page.jumpTo(0);
                 },
                 icon: const Icon(Icons.home),
               ),
