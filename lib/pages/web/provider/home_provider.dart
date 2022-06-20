@@ -1,8 +1,3 @@
-import 'package:e_futbol_flutter/pages/web/provider/addarena.dart';
-import 'package:e_futbol_flutter/pages/web/provider/book.dart';
-import 'package:e_futbol_flutter/pages/web/provider/dashboard.dart';
-import 'package:e_futbol_flutter/pages/web/provider/listarena.dart';
-import 'package:e_futbol_flutter/pages/web/provider/setting.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -16,41 +11,12 @@ class HomeProvider extends StatefulWidget {
 }
 
 enum MenuItem {
+  history,
   logout,
-}
-enum HomePage {
-  dashboard,
-  addarena,
-  listarena,
-  order,
-  setting,
 }
 
 class _HomeState extends State<HomeProvider> {
-  HomePage selectedPage = HomePage.dashboard;
-  final PageController _pageController = PageController();
-
-  changePage(HomePage page) {
-    setState(() {
-      if (page == HomePage.dashboard) {
-        selectedPage = page;
-        _pageController.jumpToPage(0);
-      } else if (page == HomePage.addarena) {
-        selectedPage = page;
-        _pageController.jumpToPage(1);
-      } else if (page == HomePage.addarena) {
-        selectedPage = page;
-        _pageController.jumpToPage(2);
-      } else if (page == HomePage.addarena) {
-        selectedPage = page;
-        _pageController.jumpToPage(3);
-      } else {
-        selectedPage = page;
-        _pageController.jumpToPage(4);
-      }
-    });
-  }
-
+  PageController page = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +45,7 @@ class _HomeState extends State<HomeProvider> {
                 ),
               ),
               Text(
-                'MASLAN',
+                'Hakim',
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 3.sp,
@@ -99,7 +65,8 @@ class _HomeState extends State<HomeProvider> {
                 borderRadius: BorderRadius.circular(2.sp)),
             offset: Offset(0, 8.h),
             onSelected: (value) {
-              if (value == MenuItem.logout) {
+              if (value == MenuItem.history) {
+              } else if (value == MenuItem.logout) {
                 //authService.logout();
               }
             },
@@ -130,7 +97,7 @@ class _HomeState extends State<HomeProvider> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           SideMenu(
-            controller: _pageController,
+            controller: page,
             // onDisplayModeChanged: (mode) {
             //   print(mode);
             // },
@@ -173,7 +140,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 0,
                 title: 'Dashboard',
                 onTap: () {
-                  _pageController.jumpToPage(0);
+                  page.jumpTo(0);
                 },
                 icon: const Icon(Icons.home),
               ),
@@ -181,14 +148,14 @@ class _HomeState extends State<HomeProvider> {
                   priority: 1,
                   title: 'Add Arena',
                   onTap: () {
-                    _pageController.jumpToPage(1);
+                    page.jumpToPage(1);
                   },
                   icon: const Icon(Icons.note_add_rounded)),
               SideMenuItem(
                 priority: 2,
                 title: 'List Arena',
                 onTap: () {
-                  _pageController.jumpToPage(2);
+                  page.jumpToPage(2);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
               ),
@@ -196,7 +163,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 3,
                 title: 'Order',
                 onTap: () {
-                  _pageController.jumpToPage(3);
+                  page.jumpToPage(3);
                 },
                 icon: const Icon(Icons.shopping_cart),
               ),
@@ -204,7 +171,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 4,
                 title: 'Settings',
                 onTap: () {
-                  _pageController.jumpToPage(4);
+                  page.jumpToPage(4);
                 },
                 icon: const Icon(Icons.settings),
               ),
@@ -218,13 +185,53 @@ class _HomeState extends State<HomeProvider> {
           ),
           Expanded(
             child: PageView(
-              controller: _pageController,
+              controller: page,
               children: [
-                Dashboard(),
-                AddArena(),
-                ListArena(),
-                Book(),
-                Setting(),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Dashboard',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Users',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Files',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Download',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
+                Container(
+                  color: Colors.white,
+                  child: const Center(
+                    child: Text(
+                      'Settings',
+                      style: TextStyle(fontSize: 35),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
