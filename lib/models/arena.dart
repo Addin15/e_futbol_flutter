@@ -11,6 +11,8 @@ class Arena {
   bool? refferee;
   bool? spectatorsSeat;
   String? address;
+  double? latitude;
+  double? longitude;
   int? startDayTime;
   int? endDayTime;
   int? endNightTime;
@@ -28,6 +30,8 @@ class Arena {
     this.refferee,
     this.spectatorsSeat,
     this.address,
+    this.latitude,
+    this.longitude,
     this.startDayTime,
     this.endDayTime,
     this.endNightTime,
@@ -46,6 +50,8 @@ class Arena {
         refferee: map['refferee'] == 1 ? true : false,
         spectatorsSeat: map['spectators_seat'] == 1 ? true : false,
         address: map['arena_address'],
+        latitude: map['latitude'],
+        longitude: map['longitude'],
         startDayTime: int.parse(map['start_day_time']),
         endDayTime: int.parse(map['end_day_time']),
         endNightTime: int.parse(map['end_night_time']),

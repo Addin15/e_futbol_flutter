@@ -40,6 +40,7 @@ class AuthController {
       body: jsonEncode({
         'username': username,
         'email': email,
+        'role': 'consumer',
         'password': password,
       }),
     );

@@ -427,7 +427,10 @@ class _ArenaDetailsState extends State<ArenaDetails> {
                           onTap: () => Navigator.push(
                               context,
                               CupertinoPageRoute(
-                                  builder: (context) => ArenaLocation())),
+                                  builder: (context) => ArenaLocation(
+                                        latitude1: arena!.latitude!,
+                                        longitude1: arena!.longitude!,
+                                      ))),
                           child: Card(
                             elevation: 3,
                             shape: RoundedRectangleBorder(
