@@ -2,6 +2,7 @@ import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/compare.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/nearby.dart';
 import 'package:e_futbol_flutter/pages/web/consumer/search.dart';
+import 'package:e_futbol_flutter/pages/web/provider/home_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -65,7 +66,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
         if (user == null) {
           return const Landing();
         } else {
-          return const Home();
+          return const HomeProvider();
         }
       },
     );
