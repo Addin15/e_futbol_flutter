@@ -65,6 +65,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
         if (user == null) {
           return const Landing();
+        } else if (user.role == 'consumer') {
+          return const Home();
         } else {
           return const HomeProvider();
         }
