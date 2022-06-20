@@ -3,6 +3,7 @@ import 'package:e_futbol_flutter/pages/web/auth/sign_in.dart';
 import 'package:e_futbol_flutter/pages/web/auth/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:e_futbol_flutter/pages/web/auth/business_signin.dart';
 
 class Landing extends StatefulWidget {
   const Landing({Key? key}) : super(key: key);
@@ -17,6 +18,8 @@ class _LandingState extends State<Landing> {
       return LandingContent(changePage: changePage);
     } else if (_selectedPage == 1) {
       return SignUp(changePage: changePage);
+    } else if (_selectedPage == 3) {
+      return BusinessSignin(changePage: changePage);
     } else {
       return SignIn(changePage: changePage);
     }
@@ -61,7 +64,11 @@ class _LandingState extends State<Landing> {
       ),
       actions: [
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            setState(() {
+              _selectedPage = 3;
+            });
+          },
           child: Text(
             'E-Futbol for Business',
             style: TextStyle(
