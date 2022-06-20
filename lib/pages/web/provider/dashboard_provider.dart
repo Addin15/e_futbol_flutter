@@ -1,23 +1,17 @@
-import 'package:e_futbol_flutter/pages/web/provider/dashboard_provider.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:e_futbol_flutter/pages/web/consumer/home.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
-import 'package:e_futbol_flutter/constants/color.dart';
 
-class HomeProvider extends StatefulWidget {
-  const HomeProvider({Key? key}) : super(key: key);
+class DashboardProvider extends StatefulWidget {
+  const DashboardProvider({Key? key}) : super(key: key);
 
   @override
-  State<HomeProvider> createState() => _HomeState();
+  State<DashboardProvider> createState() => _DashboardProviderState();
 }
 
-enum MenuItem {
-  history,
-  logout,
-}
+class _DashboardProviderState extends State<DashboardProvider> {
+  get primary => null;
 
-class _HomeState extends State<HomeProvider> {
-  PageController page = PageController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +40,7 @@ class _HomeState extends State<HomeProvider> {
                 ),
               ),
               Text(
-                'Hakim',
+                'MAZLAN',
                 style: TextStyle(
                   color: Colors.black87,
                   fontSize: 3.sp,
