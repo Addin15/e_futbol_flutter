@@ -1,3 +1,8 @@
+import 'package:e_futbol_flutter/pages/web/provider/addarena.dart';
+import 'package:e_futbol_flutter/pages/web/provider/book.dart';
+import 'package:e_futbol_flutter/pages/web/provider/dashboard.dart';
+import 'package:e_futbol_flutter/pages/web/provider/listarena.dart';
+import 'package:e_futbol_flutter/pages/web/provider/setting.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
@@ -187,51 +192,11 @@ class _HomeState extends State<HomeProvider> {
             child: PageView(
               controller: page,
               children: [
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Dashboard',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Users',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Files',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Download',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
-                Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: Text(
-                      'Settings',
-                      style: TextStyle(fontSize: 35),
-                    ),
-                  ),
-                ),
+                Dashboard(),
+                AddArena(),
+                ListArena(),
+                Book(),
+                Setting(),
               ],
             ),
           ),
