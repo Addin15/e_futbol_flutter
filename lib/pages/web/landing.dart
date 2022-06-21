@@ -1,4 +1,5 @@
 import 'package:e_futbol_flutter/constants/color.dart';
+import 'package:e_futbol_flutter/pages/web/auth/business_signup.dart';
 import 'package:e_futbol_flutter/pages/web/auth/sign_in.dart';
 import 'package:e_futbol_flutter/pages/web/auth/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,8 @@ class _LandingState extends State<Landing> {
       return SignUp(changePage: changePage);
     } else if (_selectedPage == 3) {
       return BusinessSignin(changePage: changePage);
+    } else if (_selectedPage == 4) {
+      return BusinessSignUp(changePage: changePage);
     } else {
       return SignIn(changePage: changePage);
     }

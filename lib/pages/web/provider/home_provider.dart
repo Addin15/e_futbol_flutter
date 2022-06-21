@@ -1,3 +1,4 @@
+import 'package:e_futbol_flutter/auth.dart';
 import 'package:e_futbol_flutter/pages/web/provider/addarena.dart';
 import 'package:e_futbol_flutter/pages/web/provider/book.dart';
 import 'package:e_futbol_flutter/pages/web/provider/dashboard.dart';
@@ -5,6 +6,7 @@ import 'package:e_futbol_flutter/pages/web/provider/listarena.dart';
 import 'package:e_futbol_flutter/pages/web/provider/setting.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:e_futbol_flutter/constants/color.dart';
 
@@ -99,8 +101,10 @@ class _HomeState extends State<HomeProvider> {
                 borderRadius: BorderRadius.circular(2.sp)),
             offset: Offset(0, 8.h),
             onSelected: (value) {
-          if (value == MenuItem.logout) {
-                //authService.logout();
+              if (value == MenuItem.logout) {
+                AuthService auth =
+                    Provider.of<AuthService>(context, listen: false);
+                auth.logout();
               }
             },
             itemBuilder: (context) => [
@@ -173,7 +177,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 0,
                 title: 'Dashboard',
                 onTap: () {
-                    _pageController.jumpToPage(0);
+                  _pageController.jumpToPage(0);
                 },
                 icon: const Icon(Icons.home),
               ),
@@ -181,14 +185,14 @@ class _HomeState extends State<HomeProvider> {
                   priority: 1,
                   title: 'Add Field',
                   onTap: () {
-                   _pageController.jumpToPage(1);
+                    _pageController.jumpToPage(1);
                   },
                   icon: const Icon(Icons.note_add_rounded)),
               SideMenuItem(
                 priority: 2,
                 title: 'List Field',
                 onTap: () {
-                 _pageController.jumpToPage(2);
+                  _pageController.jumpToPage(2);
                 },
                 icon: const Icon(Icons.file_copy_rounded),
               ),
@@ -196,7 +200,7 @@ class _HomeState extends State<HomeProvider> {
                 priority: 3,
                 title: 'Order',
                 onTap: () {
-                   _pageController.jumpToPage(3);
+                  _pageController.jumpToPage(3);
                 },
                 icon: const Icon(Icons.shopping_cart),
               ),
@@ -218,7 +222,7 @@ class _HomeState extends State<HomeProvider> {
           ),
           Expanded(
             child: PageView(
-            controller: _pageController,
+              controller: _pageController,
               children: [
                 Dashboard(),
                 AddArena(),

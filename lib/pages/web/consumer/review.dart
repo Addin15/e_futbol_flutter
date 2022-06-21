@@ -105,18 +105,22 @@ class _ArenaReviewState extends State<ArenaReview> {
                                 ),
                               )
                             : Container(
-                                height: 50.h,
+                                height: 30.h,
+                                width: double.infinity,
                                 child: GridView.builder(
-                                  scrollDirection: Axis.horizontal,
+                                  scrollDirection: Axis.vertical,
                                   shrinkWrap: true,
                                   itemCount: reviews.length,
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3),
+                                          crossAxisCount: 3,
+                                          crossAxisSpacing: 2.w,
+                                          mainAxisSpacing: 2.h),
                                   itemBuilder: (context, index) {
                                     Review review = reviews[index];
                                     return Container(
-                                      height: 10.h,
+                                      height: 20.h,
+                                      width: 10.w,
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(2.sp),
