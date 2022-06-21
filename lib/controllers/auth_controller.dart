@@ -31,6 +31,7 @@ class AuthController {
     required String username,
     required String email,
     required String password,
+    required String role,
   }) async {
     String url = hostName + api + '/register';
 
@@ -40,7 +41,7 @@ class AuthController {
       body: jsonEncode({
         'username': username,
         'email': email,
-        'role': 'provider',
+        'role': role,
         'password': password,
       }),
     );

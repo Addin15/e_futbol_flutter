@@ -164,6 +164,7 @@ class _SignUpState extends State<SignUp> {
                               username: _usernameController.text,
                               email: _emailController.text,
                               password: _passwordController.text,
+                              role: 'consumer',
                             );
                           }
 

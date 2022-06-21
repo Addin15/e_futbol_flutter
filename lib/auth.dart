@@ -46,9 +46,14 @@ class AuthService extends ChangeNotifier {
     required String username,
     required String email,
     required String password,
+    required String role,
   }) async {
     dynamic res = await AuthController.register(
-        username: username, email: email, password: password);
+      username: username,
+      email: email,
+      password: password,
+      role: role,
+    );
 
     if (res != null) {
       Box _userBox = await Hive.openBox('user');
